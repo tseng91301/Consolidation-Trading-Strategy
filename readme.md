@@ -54,3 +54,7 @@ eg: `get_kLine_data("BTC-USDT", "15m", 10)`
 
 output: The K-Line data as `Array` type.
 eg: `[{'open': '94233.2', 'close': '94168.5', 'high': '94259.8', 'low': '94164.6', 'volume': '15.12', 'time': 1745727300000}, {'open': '94119.3', 'close': '94233.0', 'high': '94241.5', 'low': '94082.4', 'volume': '26.77', 'time': 1745726400000}, ...]`
+
+## Reference
+### Indicator Coding Demonstration
+Go to [indicator_demonstration.ipynb](indicator_demonstration.ipynb) for further information.
