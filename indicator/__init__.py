@@ -71,7 +71,6 @@ class Indicators:
             return
         append_min_index = 0
         for i in range(len(data)):
-            print(int(data[i]["time"]), self.kLines_max_timeStamp, sep=", ")
             if int(data[i]["time"]) <= self.kLines_max_timeStamp:
                 append_min_index += 1
         if(append_min_index >= len(data)):
