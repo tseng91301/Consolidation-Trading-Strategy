@@ -1,7 +1,7 @@
 # Importing required libraries
 import talib as ta
 
-from . import plotting
+from . import plotting, bos_mss
 
 import pandas as pd
 from datetime import datetime
@@ -82,6 +82,9 @@ class Indicators:
         self.calculate_rsi()
         pass
 
+    def calculate_bos_mss(self):
+        return bos_mss.calculate(self.kLines_pd)
+
     def calculate_rsi(self):
         # Calculate RSI
         self.kLines_pd["RSI"] = ta.RSI(self.kLines_pd["close"], timeperiod=self.rsi_kLines_count)
@@ -93,9 +96,12 @@ class Indicators:
         self.kLines_pd['EMA40'] = self.kLines_pd['close'].ewm(span=self.ema_m_count, adjust=False).mean()
         self.kLines_pd['EMA60'] = self.kLines_pd['close'].ewm(span=self.ema_l_count, adjust=False).mean()
 
-    def plot(self, included_i: list):
+    def plot(self, included_i: list, bos_mss_data: list = []):
         if "kl" in included_i:
-            plotting.draw_kLine(self.kLines_pd)
+            if(len(bos_mss_data) != 0):
+                plotting.draw_kLine_2(self.kLines_pd, bos_mss_data, self.symbol)
+            else:
+                plotting.draw_kLine(self.kLines_pd, self.symbol)
         if "all" in included_i:
             plotting.draw_all(self.kLines_pd)
         return

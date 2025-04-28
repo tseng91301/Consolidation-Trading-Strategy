@@ -25,6 +25,59 @@ def draw_kLine(data: pd.DataFrame, symbol: str = ""):
     )
     fig.show()
 
+def draw_kLine_2(data: pd.DataFrame, bos_mss_data: list, symbol: str = ""):
+    # kLine drawing including bos and mss data
+    # 繪製 Plotly K 線圖
+    fig = go.Figure(data=[go.Candlestick(
+        x=data['time'],
+        open=data['open'],
+        high=data['high'],
+        low=data['low'],
+        close=data['close'],
+        increasing_line_color='green',
+        decreasing_line_color='red'
+    )])
+    
+    # 定義不同類型的顏色和標記
+    marker_colors = {
+        1: 'blue',  # bos long
+        2: 'orange',  # bos short
+        3: 'purple',  # mss to long
+        4: 'yellow'  # mss to short
+    }
+    
+    # 繪製 bos 和 mss 標記
+    for entry in bos_mss_data:
+        mark_type, start_x, start_y, end_x = entry
+        
+        # 使用不同的顏色繪製標記
+        color = marker_colors.get(mark_type, 'black')  # 默認為黑色
+        
+        fig.add_trace(go.Scatter(
+            x=[data['time'].iloc[start_x], data['time'].iloc[end_x]],
+            y=[start_y, start_y],
+            mode='lines+text',
+            line=dict(color=color, width=2),
+            text=[f"bos" if mark_type in [1, 2] else "mss"],  # 只显示 bos 或 mss
+            textposition='top center',  # Text显示在线的中间位置
+            name=f"Marker {mark_type}"
+        ))
+    
+    # 設定標題和軸標籤
+    title = "Candlestick chart"
+    if(symbol != ""):
+        title += f" of {symbol}"
+    
+    fig.update_layout(
+        title=title,
+        xaxis_title='Time',
+        yaxis_title='Price',
+        xaxis_rangeslider_visible=False
+    )
+    
+    # 顯示圖表
+    fig.show()
+
 def draw_all(data: pd.DataFrame, symbol: str = ""):
     title = "Candlestick chart"
     if(symbol != ""):
