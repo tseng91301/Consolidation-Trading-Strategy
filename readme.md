@@ -57,4 +57,5 @@ eg: `[{'open': '94233.2', 'close': '94168.5', 'high': '94259.8', 'low': '94164.6
 
 ## Reference
 ### Indicator Coding Demonstration
-Go to [indicator_demonstration.ipynb](indicator_demonstration.ipynb) for further information.
+* Go to [indicator_demonstration.ipynb](indicator_demonstration.ipynb) for further information.
+* The `indicator` python module has been created, checkout [indicator_test_class.ipynb](indicator_test_class.ipynb) for further information.
