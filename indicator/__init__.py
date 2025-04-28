@@ -1,8 +1,7 @@
 # Importing required libraries
 import talib as ta
-import plotly.graph_objs as go
-from plotly.subplots import make_subplots
-import numpy as np
+
+from . import plotting
 
 import pandas as pd
 from datetime import datetime
@@ -93,3 +92,10 @@ class Indicators:
         self.kLines_pd['EMA20'] = self.kLines_pd['close'].ewm(span=self.ema_s_count, adjust=False).mean()
         self.kLines_pd['EMA40'] = self.kLines_pd['close'].ewm(span=self.ema_m_count, adjust=False).mean()
         self.kLines_pd['EMA60'] = self.kLines_pd['close'].ewm(span=self.ema_l_count, adjust=False).mean()
+
+    def plot(self, included_i: list):
+        if "kl" in included_i:
+            plotting.draw_kLine(self.kLines_pd)
+        if "all" in included_i:
+            plotting.draw_all(self.kLines_pd)
+        return
