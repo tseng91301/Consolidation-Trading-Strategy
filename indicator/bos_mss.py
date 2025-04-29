@@ -17,34 +17,59 @@ def calculate(data: pd.DataFrame) -> list:
     the_most_low = data.iloc[0]["low"]
     the_most_high_i = 0
     the_most_low_i = 0
+    high2 = data.iloc[0]["high"]
+    low2 = data.iloc[0]["low"]
+    high2_i = 0
+    low2_i = 0
     l = len(data)
     has_callback = False
     for i in range(l):
         trend_t = _long_or_short(data.iloc[i])
         if current_trend == 1:
+            check = True
             if trend_t != current_trend:
                 if data.iloc[i]["close"] < the_most_low: # MSS
                     ret_data.append([4, the_most_low_i, the_most_low, i])
+                    the_most_high = high2
+                    the_most_high_i = high2_i
+                    high2 = data.iloc[i]["close"]
+                    high2_i = i
+                    low2 = data.iloc[i]["low"]
+                    low2_i = i
                     current_trend = 0
                     has_callback = False
+                    check = False
                 elif has_callback == False:
                     has_callback = True
             else:
                 if has_callback and data.iloc[i]["close"] > the_most_high: # BOS Long
                     ret_data.append([1, the_most_high_i, the_most_high, i])
                     has_callback = False
-                    the_most_low = data.iloc[i]["low"]
-                    the_most_low_i = i
-            if data.iloc[i]["high"] > the_most_high:
-                the_most_high = data.iloc[i]["high"]
-                the_most_high_i = i
-            if data.iloc[i]["low"] < the_most_low:
-                the_most_low = data.iloc[i]["low"]
-                the_most_low_i = i
+                    check = False
+                    the_most_low = low2
+                    the_most_low_i = low2_i
+                    low2 = data.iloc[i]["close"]
+                    low2_i = i
+                    high2 = data.iloc[i]["high"]
+                    high2_i = i
+            if check:
+                if data.iloc[i]["high"] > high2:
+                    high2 = data.iloc[i]["high"]
+                    high2_i = i
+                if data.iloc[i]["low"] < low2:
+                    low2 = data.iloc[i]["low"]
+                    low2_i = i
         else:
+            check = True
             if trend_t != current_trend:
                 if data.iloc[i]["close"] > the_most_high: # MSS
                     ret_data.append([3, the_most_high_i, the_most_high, i])
+                    the_most_low = low2
+                    the_most_low_i = low2_i
+                    low2 = data.iloc[i]["close"]
+                    low2_i = i
+                    high2 = data.iloc[i]["high"]
+                    high2_i = i
                     current_trend = 1
                     has_callback = False
                 elif has_callback == False:
@@ -53,12 +78,17 @@ def calculate(data: pd.DataFrame) -> list:
                 if has_callback and data.iloc[i]["close"] < the_most_low: # BOS Short
                     ret_data.append([2, the_most_low_i, the_most_low, i])
                     has_callback = False
-                    the_most_high = data.iloc[i]["high"]
-                    the_most_high_i = i
-            if data.iloc[i]["high"] > the_most_high:
-                the_most_high = data.iloc[i]["high"]
-                the_most_high_i = i
-            if data.iloc[i]["low"] < the_most_low:
-                the_most_low = data.iloc[i]["low"]
-                the_most_low_i = i
+                    the_most_high = high2
+                    the_most_high_i = high2_i
+                    high2 = data.iloc[i]["close"]
+                    high2_i = i
+                    low2 = data.iloc[i]["low"]
+                    low2_i = i
+            if check:
+                if data.iloc[i]["high"] > high2:
+                    high2 = data.iloc[i]["high"]
+                    high2_i = i
+                if data.iloc[i]["low"] < low2:
+                    low2 = data.iloc[i]["low"]
+                    low2_i = i
     return ret_data
