@@ -96,7 +96,7 @@ class Indicators:
         self.kLines_pd['EMA40'] = self.kLines_pd['close'].ewm(span=self.ema_m_count, adjust=False).mean()
         self.kLines_pd['EMA60'] = self.kLines_pd['close'].ewm(span=self.ema_l_count, adjust=False).mean()
 
-    def plot(self, included_i: list, bos_mss_data: list = []):
+    def plot(self, included_i: list, bos_mss_data: list = [], rsi_div_data = []):
         if "kl" in included_i:
             if(len(bos_mss_data) != 0):
                 plotting.draw_kLine_2(self.kLines_pd, bos_mss_data, self.symbol)
@@ -104,4 +104,6 @@ class Indicators:
                 plotting.draw_kLine(self.kLines_pd, self.symbol)
         if "all" in included_i:
             plotting.draw_all(self.kLines_pd)
+        if "rsi_div" in included_i:
+            plotting.draw_rsi_div(self.kLines_pd, rsi_div_data)
         return
