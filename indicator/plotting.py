@@ -127,7 +127,8 @@ def draw_rsi_div(data: pd.DataFrame, rsi_div_data: list, symbol: str = ""):
             line=dict(color=color, width=2),
             text=[f"bull" if mark_type in [1] else "bear"],  # 只显示 bos 或 mss
             textposition='top center',  # Text显示在线的中间位置
-            name=f"Marker {mark_type}"
+            name=f"Marker {mark_type}",
+            showlegend=False
         ), row=2, col=1)
     
     # 設定標題和軸標籤
@@ -139,7 +140,8 @@ def draw_rsi_div(data: pd.DataFrame, rsi_div_data: list, symbol: str = ""):
         title=title,
         xaxis_title='Time',
         yaxis_title='Price',
-        xaxis_rangeslider_visible=False
+        xaxis_rangeslider_visible=False,
+        height=700
     )
     
     # 顯示圖表
@@ -223,7 +225,7 @@ def draw_all(data: pd.DataFrame, symbol: str = ""):
         xaxis_title='Time',
         yaxis_title='Price',
         xaxis_rangeslider_visible=False,
-        height=800  # Set the height of the entire figure
+        height=700  # Set the height of the entire figure
     )
     fig.show()
     return

@@ -1,7 +1,7 @@
 # Importing required libraries
 import talib as ta
 
-from . import plotting, bos_mss
+from . import plotting, bos_mss, rsi
 
 import pandas as pd
 from datetime import datetime
@@ -96,6 +96,14 @@ class Indicators:
         self.kLines_pd['EMA40'] = self.kLines_pd['close'].ewm(span=self.ema_m_count, adjust=False).mean()
         self.kLines_pd['EMA60'] = self.kLines_pd['close'].ewm(span=self.ema_l_count, adjust=False).mean()
 
+    def find_rsi_divergences(self) -> list:
+        high_points, low_points = rsi.same_high_low(self.kLines_pd["close"], self.kLines_pd["RSI"])
+        r = rsi.find_rsi_divergences(self.kLines_pd["close"], self.kLines_pd["RSI"], high_points, low_points)
+        for i, v in enumerate(r):
+            r[i][1] = self.kLines_pd["time"][r[i][1]]
+            r[i][3] = self.kLines_pd["time"][r[i][3]]
+        return r
+    
     def plot(self, included_i: list, bos_mss_data: list = [], rsi_div_data = []):
         if "kl" in included_i:
             if(len(bos_mss_data) != 0):
